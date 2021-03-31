@@ -1,0 +1,9 @@
+*.log
+*.pot
+*.pyc
+myfirst/__pycache__
+/myfirst/articles/__pycache__/
+/myfirst/articles/migrations/__pycache__/
+db.sqlite3
+CREATE
+datadump.json
