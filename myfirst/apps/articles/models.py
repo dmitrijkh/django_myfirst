@@ -25,7 +25,7 @@ class Article(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    author_name = models.CharField('Имя комментатора', max_length=50)
+    author_name = models.CharField('Имя комментатора', max_length=60)
     comment_text = models.CharField('Текст комментария', max_length=200)
 
     def __str__(self):
