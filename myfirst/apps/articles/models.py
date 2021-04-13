@@ -3,6 +3,7 @@ import datetime
 from django.db import models
 
 from django.utils import timezone
+from tags import models as m
 
 
 # Create your models here.
@@ -11,6 +12,7 @@ class Article(models.Model):
     article_title = models.CharField('Название статьи', max_length=200)
     article_text = models.TextField('Текст статьи')
     pub_date = models.DateTimeField('Дата публикации')
+    keywords = models.ManyToManyField(m.Keyword)
 
     def __str__(self):
         return self.article_title
