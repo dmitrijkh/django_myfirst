@@ -1,7 +1,7 @@
 
 from django.db import models
 
-# from articles import models as m
+# from articles import models as art_m
 # Create your models here.
 
 class Keyword(models.Model):
@@ -11,9 +11,6 @@ class Keyword(models.Model):
 		db_table = 'keywords'
 		verbose_name = 'Тег'
 		verbose_name_plural = 'Теги'
-
-
-
 
 
 

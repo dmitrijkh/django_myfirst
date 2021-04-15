@@ -24,6 +24,12 @@ class Article(models.Model):
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
 
+class Tag(models.Model):
+    tag_article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag_name = models.ForeignKey(m.Keyword, on_delete=models.CASCADE)
+
+
+
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
