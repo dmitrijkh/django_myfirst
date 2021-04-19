@@ -12,7 +12,16 @@ class Article(models.Model):
     article_title = models.CharField('Название статьи', max_length=200)
     article_text = models.TextField('Текст статьи')
     pub_date = models.DateTimeField('Дата публикации')
-    keywords = models.ManyToManyField(m.Keyword)
+    keywords = models.ManyToManyField(
+        m.Keyword,
+        through='Article_Keyword',
+        related_name='tags',
+        through_fields=[
+        'article',
+        'tag'
+        ]
+        )
+
 
     def __str__(self):
         return self.article_title
@@ -23,10 +32,11 @@ class Article(models.Model):
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
+# Поля и класс промежуточной модели называть совмещённым названием соединяемых моделей.
 
-class Tag(models.Model):
-    tag_article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    tag_name = models.ForeignKey(m.Keyword, on_delete=models.CASCADE)
+class Article_Keyword(models.Model):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    tag = models.ForeignKey(m.Keyword, on_delete=models.CASCADE)
 
 
 
@@ -35,6 +45,7 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     author_name = models.CharField('Имя комментатора', max_length=60)
     comment_text = models.CharField('Текст комментария', max_length=200)
+    is_moderate = models.BooleanField(default=False)
 
     def __str__(self):
         return self.author_name
