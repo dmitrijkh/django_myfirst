@@ -10,6 +10,7 @@ from tags import models as m
 
 class Article(models.Model):
     article_title = models.CharField('Название статьи', max_length=200)
+    article_slug = models.SlugField(max_length=100)
     article_text = models.TextField('Текст статьи')
     pub_date = models.DateTimeField('Дата публикации')
     keywords = models.ManyToManyField(
@@ -28,6 +29,9 @@ class Article(models.Model):
 
     def was_published_recently(self):
         return self.pub_date >= (timezone.now() - datetime.timedelta(days=7))
+
+    def get_absolute_url(self):
+        return reverse('articles/detail.html', kwargs={'slug': self.article_slug})
 
     class Meta:
         verbose_name = 'Статья'
