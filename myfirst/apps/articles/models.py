@@ -18,8 +18,8 @@ class Article(models.Model):
         through='Article_Keyword',
         related_name='tags',
         through_fields=[
-        'article',
-        'tag'
+            'article',
+            'tag'
         ]
         )
 
@@ -31,7 +31,7 @@ class Article(models.Model):
         return self.pub_date >= (timezone.now() - datetime.timedelta(days=7))
 
     def get_absolute_url(self):
-        return reverse('articles/detail.html', kwargs={'slug': self.article_slug})
+        return reverse('articles/list.html', kwargs={'article_slug': self.article_slug})
 
     class Meta:
         verbose_name = 'Статья'
@@ -41,6 +41,9 @@ class Article(models.Model):
 class Article_Keyword(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     tag = models.ForeignKey(m.Keyword, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('article', 'tag')
 
 
 
