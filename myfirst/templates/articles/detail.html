@@ -3,9 +3,9 @@
 {% block title %}{{article.article_title}}{% endblock %}
 
 {% block content %}
-<h2>{{article.article_title}}</h2>
+<h2>{{article.title}}</h2>
 
-<p>{{article.article_text}}</p>
+<p>{{article.text}}</p>
 
 <em>{{article.pub_date}}</em>
 <br>
@@ -16,7 +16,7 @@
 	{% for c in latest_comment_list %}
 		<div>
 			<strong>{{c.author_name}}</strong>
-			<p>{{c.comment_text}}</p>
+			<p>{{c.text}}</p>
 		</div>
 	{% endfor %}
 

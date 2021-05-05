@@ -37,7 +37,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
 
     # my_apps
-
+    'rest_framework',
     'articles.apps.ArticlesConfig',
     'grappelli',
     'tags.apps.TagsConfig',

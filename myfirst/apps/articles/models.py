@@ -9,13 +9,14 @@ from tags import models as m
 # Create your models here.
 
 class Article(models.Model):
-    article_title = models.CharField('Название статьи', max_length=200)
-    article_slug = models.SlugField(max_length=100)
-    article_text = models.TextField('Текст статьи')
+    # Переделать имена title, slug и т.д
+    title = models.CharField('Название статьи', max_length=200)
+    slug = models.SlugField(max_length=100)
+    text = models.TextField('Текст статьи')
     pub_date = models.DateTimeField('Дата публикации')
     keywords = models.ManyToManyField(
         m.Keyword,
-        through='Article_Keyword',
+        through='ArticleKeyword',
         related_name='tags',
         through_fields=[
             'article',
@@ -25,33 +26,37 @@ class Article(models.Model):
 
 
     def __str__(self):
-        return self.article_title
+        return self.title
 
     def was_published_recently(self):
         return self.pub_date >= (timezone.now() - datetime.timedelta(days=7))
 
     def get_absolute_url(self):
-        return reverse('articles/list.html', kwargs={'article_slug': self.article_slug})
+        # reverse принимает вьюху. Пишем сюда index
+        return reverse('index', kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
 # Поля и класс промежуточной модели называть совмещённым названием соединяемых моделей.
 
-class Article_Keyword(models.Model):
+class ArticleKeyword(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     tag = models.ForeignKey(m.Keyword, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('article', 'tag')
-
+        # unique_together = ('article', 'tag')
+        constraints = [
+            models.UniqueConstraint(fields=['article', 'tag'], name='article_tag_relation')
+        ]
 
 
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    # Это, в идеале, отдельная модель автор, и там уже поле name
     author_name = models.CharField('Имя комментатора', max_length=60)
-    comment_text = models.CharField('Текст комментария', max_length=200)
+    text = models.CharField('Текст комментария', max_length=200)
     is_moderate = models.BooleanField(default=False)
 
     def __str__(self):

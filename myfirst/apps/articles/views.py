@@ -1,4 +1,8 @@
+# Переделать на классы
+
 from django.http import Http404, HttpResponseRedirect
+
+
 
 from django.shortcuts import render
 
@@ -6,6 +10,13 @@ from django.urls import reverse
 
 from .models import Article
 
+from rest_framework import viewsets
+from .serializers import ArticleSerializer
+
+
+class ArticleViewSet(viewsets.ModelViewSet):
+    queryset = Article.objects.all().order_by('title')
+    serializer_class = ArticleSerializer
 
 def index(request):
     latest_articles_list = Article.objects.order_by('-pub_date')[:5]
